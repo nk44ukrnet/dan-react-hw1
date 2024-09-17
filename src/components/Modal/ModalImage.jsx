@@ -1,3 +1,4 @@
+import './ModalImage.scss';
 export default function ModalImage({src = "https://picsum.photos/276/140", alt = ""}) {
  return (
   <>

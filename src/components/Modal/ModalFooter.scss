@@ -1,3 +1,13 @@
+.modal-footer {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: space-between;
+  &:not(:has(.modal-button--outline)){
+    justify-content: center;
+  }
+}
+
 .modal-button {
   display: flex;
   justify-content: center;
@@ -15,14 +25,11 @@
   &--outline {
     border: 1px solid #3C4242;
     background: #fff;
-    &, &:visited {
-      color: #8a33fd;
-    }
+    color: #8a33fd;
+    padding-inline: 20px;
   }
 
-  &, &:visited {
-    color: #fff;
-  }
+  color: #fff;
 
   &:hover {
     cursor: pointer;

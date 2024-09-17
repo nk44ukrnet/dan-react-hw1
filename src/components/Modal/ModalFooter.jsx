@@ -1,10 +1,11 @@
-import Button from "../Button/Button.jsx";
 
+import './ModalFooter.scss';
 export default function ModalFooter({firstText, secondaryText, firstClick, secondaryClick}){
 return (
     <div className="modal-footer">
-        {firstText & <Button onClick={firstClick}>{firstText}</Button>}
-        {secondaryText & <Button onClick={secondaryClick}>{secondaryText}</Button>}
+        {firstText && <button type="button" className="modal-button" onClick={firstClick}>{firstText}</button>}
+        {secondaryText && <button type="button" className="modal-button modal-button--outline"
+                 onClick={secondaryClick}>{secondaryText}</button>}
     </div>
 )
 }

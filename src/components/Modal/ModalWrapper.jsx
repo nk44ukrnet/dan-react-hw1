@@ -1,5 +1,5 @@
 import './ModalWrapper.scss';
 
-export default function ModalWrapper({children}){
-    return <div className="modal-wrapper">{children}</div>
+export default function ModalWrapper({children, onClick}) {
+    return <div className="modal-wrapper" onClick={onClick}>{children}</div>
 }
