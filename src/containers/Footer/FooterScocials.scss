@@ -1,0 +1,24 @@
+.footer-socials {
+  margin:0;
+  padding-inline: 0;
+  padding-block: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  list-style-type: none;
+
+  a {
+    width: 37px;
+    height: 37px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #F6F6F6;
+    border-radius: 11px ;
+    transition: all 0.25s linear;
+
+    &:hover {
+    transform: translateY(2px);
+    }
+  }
+}

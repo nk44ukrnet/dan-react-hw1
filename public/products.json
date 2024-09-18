@@ -1,0 +1,274 @@
+[
+  {
+    "name": "Black Sweatshirt",
+    "price": 1000,
+    "image": "a1.png",
+    "code": "a1",
+    "category": [
+      "Shirts"
+    ],
+    "gender": [
+      "male"
+    ],
+    "color": [
+      "black"
+    ],
+    "brand": "MM",
+    "sale": false
+  },
+  {
+    "name": "Printer",
+    "price": 1200,
+    "image": "a2.png",
+    "code": "a2",
+    "category": [
+      "Printed T-Shirts"
+    ],
+    "gender": [
+      "male"
+    ],
+    "color": [
+      "black"
+    ],
+    "brand": "MM",
+    "sale": false
+  },
+  {
+    "name": "Plainer",
+    "price": 1110,
+    "image": "a3.png",
+    "code": "a3",
+    "category": [
+      "Plain T-Shirt"
+    ],
+    "gender": [
+      "male"
+    ],
+    "color": [
+      "black"
+    ],
+    "brand": "MM",
+    "sale": false
+  },
+  {
+    "name": "Polo",
+    "price": 910,
+    "image": "a4.png",
+    "code": "a4",
+    "category": [
+      "Polo T-Shirt"
+    ],
+    "gender": [
+      "male"
+    ],
+    "color": [
+      "black"
+    ],
+    "brand": "MM",
+    "sale": false
+  },
+  {
+    "name": "Hoodie",
+    "price": 550,
+    "image": "a5.png",
+    "code": "a5",
+    "category": [
+      "Hoodies & Sweetshirt"
+    ],
+    "gender": [
+      "male"
+    ],
+    "color": [
+      "green"
+    ],
+    "brand": "MM",
+    "sale": false
+  },
+  {
+    "name": "Jeans",
+    "price": 450,
+    "image": "a6.png",
+    "code": "a6",
+    "category": [
+      "Jeans"
+    ],
+    "gender": [
+      "male"
+    ],
+    "color": [
+      "blue"
+    ],
+    "brand": "Levis",
+    "sale": false
+  },
+  {
+    "name": "Active",
+    "price": 900,
+    "image": "a7.png",
+    "code": "a7",
+    "category": [
+      "Activewear"
+    ],
+    "gender": [
+      "male"
+    ],
+    "color": [
+      "black"
+    ],
+    "brand": "Levis",
+    "sale": false
+  },
+  {
+    "name": "Box",
+    "price": 200,
+    "image": "a8.png",
+    "code": "a8",
+    "category": [
+      "Boxers"
+    ],
+    "gender": [
+      "male"
+    ],
+    "color": [
+      "pink"
+    ],
+    "brand": "FS",
+    "sale": false
+  },
+  {
+    "name": "Hoodie FM",
+    "price": 570,
+    "image": "a9.png",
+    "code": "a9",
+    "category": [
+      "Hoodies & Sweetshirt"
+    ],
+    "gender": [
+      "female"
+    ],
+    "color": [
+      "orange"
+    ],
+    "brand": "JD",
+    "sale": false
+  },
+  {
+    "name": "Hoodie FM",
+    "price": 575,
+    "image": "a10.png",
+    "code": "a10",
+    "category": [
+      "Coats & Parkas"
+    ],
+    "gender": [
+      "female"
+    ],
+    "color": [
+      "green"
+    ],
+    "brand": "FS",
+    "sale": false
+  },
+  {
+    "name": "Trees",
+    "price": 400,
+    "image": "a11.png",
+    "code": "a11",
+    "category": [
+      "Trees & T-Shirt"
+    ],
+    "gender": [
+      "female"
+    ],
+    "color": [
+      "blue"
+    ],
+    "brand": "FS",
+    "sale": false
+  },
+  {
+    "name": "Boxers FM",
+    "price": 300,
+    "image": "a12.png",
+    "code": "a12",
+    "category": [
+      "Boxers"
+    ],
+    "gender": [
+      "female"
+    ],
+    "color": [
+      "brown"
+    ],
+    "brand": "FS",
+    "sale": false
+  },
+  {
+    "name": "Top Sweetshirt",
+    "price": 450,
+    "image": "a13.png",
+    "code": "a13",
+    "category": [
+      "Hoodies & Sweetshirt"
+    ],
+    "gender": [
+      "female"
+    ],
+    "color": [
+      "black"
+    ],
+    "brand": "MM",
+    "sale": true
+  },
+  {
+    "name": "Line Pattern black",
+    "price": 660,
+    "image": "a14.png",
+    "code": "a14",
+    "category": [
+      "Hoodies & Sweetshirt"
+    ],
+    "gender": [
+      "female"
+    ],
+    "color": [
+      "black"
+    ],
+    "brand": "JD",
+    "sale": true
+  },
+  {
+    "name": "Black boxers",
+    "price": 230,
+    "image": "a15.png",
+    "code": "a15",
+    "category": [
+      "Boxers"
+    ],
+    "gender": [
+      "female"
+    ],
+    "color": [
+      "black"
+    ],
+    "brand": "JD",
+    "sale": true
+  },
+  {
+    "name": "Levender Hoodie",
+    "price": 180,
+    "image": "a16.png",
+    "code": "a16",
+    "category": [
+      "Hoodies & Sweetshirt"
+    ],
+    "gender": [
+      "female"
+    ],
+    "color": [
+      "pink"
+    ],
+    "brand": "JD",
+    "sale": true
+  }
+]
