@@ -1,0 +1,10 @@
+.prodcut-list {
+  margin-block: 30px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 40px;
+
+  @media (max-width: 768px) {
+    gap: 25px;
+  }
+}

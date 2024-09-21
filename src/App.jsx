@@ -7,7 +7,7 @@ import ModalHeader from "./components/Modal/ModalHeader.jsx";
 import ModalText from "./components/Modal/ModalText.jsx";
 import ModalFooter from "./components/Modal/ModalFooter.jsx";
 import ModalClose from "./components/Modal/ModalClose.jsx";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Footer from "./containers/Footer/Footer.jsx";
 import Container from "./containers/Container/Container.jsx";
 import FooterHolder from "./containers/Footer/FooterHolder.jsx";
@@ -21,47 +21,129 @@ import ShopLogo from '/public/logo.svg?react';
 import SearchIcon from '/public/search.svg?react';
 import Header from "./containers/Header/Header.jsx";
 import BrandDeals from "./containers/BrandDeals/BrandDeals.jsx";
-
+import Heading from "./components/Heading/Heading.jsx";
+import Hero from "./containers/Hero/Hero.jsx";
+import ProductList from "./containers/ProductList/ProductList.jsx";
+import CategoryCard from "./containers/ProductList/CategoryCard.jsx";
+import {sendRequest} from "./helpers/sendRequest.js";
+import ProductCard from "./containers/ProductList/ProductCard.jsx";
 
 function App() {
 
-    const [fistModal, setFistModal] = useState(false);
-    const [secondModal, setSecondModal] = useState(false);
+    const [modalCart, setModalCart] = useState(false);
 
-    const [cartCount, setCartCount] = useState(0);
-    const [favoritesCount, setFavoritesCount] = useState(0);
+    const [cartItems, setCartItems] = useState(JSON.parse(localStorage.getItem("cartItems")) || []);
+    const [favoritesItems, setFavoritesItems] = useState(JSON.parse(localStorage.getItem("favoritesItems")) || []);
 
-    function handleToggleFirstModal() {
-        return setFistModal(!fistModal);
-    }
+    const [categoryOneProducts, setCategoryOneProducts] = useState(null);
+    const [categoryTwoProducts, setCategoryTwoProducts] = useState(null);
+    const [categorySaleProducts, setCategorySaleProducts] = useState(null);
 
-    function handleToggleSecondModal() {
-        return setSecondModal(!secondModal);
-    }
+    const [currentProduct, setCurrentProduct] = useState(null);
 
-    function handleModalOverlayClick(e, targetFunction) {
-        if (e.target.classList.contains("modal-wrapper")) {
-            targetFunction();
+    useEffect(() => {
+        sendRequest('./public/products.json')
+            .then(data => {
+                let productsData = data;
+                let categoryOne = productsData.filter(product => product.gender.includes('male'));
+                if (categoryOne.length > 8) {
+                    categoryOne.length = 8;
+                }
+                setCategoryOneProducts(categoryOne);
+
+                let categoryTwo = productsData.filter(product => product.gender.includes('female'));
+                if (categoryTwo.length > 4) {
+                    categoryTwo.length = 4;
+                }
+                setCategoryTwoProducts(categoryTwo);
+
+                let categorySale = productsData.filter(product => product.sale === true);
+                if (categorySale.length > 4) {
+                    categorySale.length = 4;
+                }
+                setCategorySaleProducts(categorySale);
+            });
+    }, []);
+
+    useEffect(() => {
+        localStorage.setItem("favoritesItems", JSON.stringify(favoritesItems));
+    }, [favoritesItems]);
+
+    useEffect(() => {
+        localStorage.setItem("cartItems", JSON.stringify(cartItems));
+    }, [cartItems]);
+
+    function handleFavoriteToggle(e) {
+        const alreadyExists = favoritesItems.some(item => item.code === e.code);
+        if (!alreadyExists) {
+            setFavoritesItems(prevState => {
+                return [...prevState, e];
+            });
+        } else {
+            setFavoritesItems(prevState => {
+                return prevState.filter(item => item.code !== e.code);
+            });
         }
     }
 
-    function handleModalFirstCLick() {
-        console.log('first button clicked')
+    function handleProductToCartToggle(e) {
+        setCurrentProduct(e);
+        handleToggleModalCart(e);
     }
 
-    function handleModalSecondaryClick() {
-        console.log('secondary button clicked')
+    function handleAddingToCartFromModal() {
+
+        setCartItems(prevState =>  [...prevState, currentProduct]);
+
+        handleToggleModalCart();
+    }
+
+    function handleDeleteFromCartByModal(){
+        setCartItems(prevState => {
+            return prevState.filter(item => item.code !== currentProduct.code);
+        });
+
+        handleToggleModalCart();
+    }
+
+    function renderAddToCartModal() {
+        const alreadyExist = cartItems.some(item => item.code === currentProduct.code);
+        return (
+            <ModalWrapper onClick={handleToggleModalCart}>
+                <ModalBody>
+                    <ModalClose onClick={handleToggleModalCart}/>
+                    <ModalImage src={`/public/products/${currentProduct.image}`} alt={currentProduct.name}/>
+                    {!alreadyExist && <ModalHeader>
+                        Add product <strong>{currentProduct.name}</strong> to cart?
+                    </ModalHeader>}
+                    {alreadyExist && <ModalHeader>Prodcut <strong>{currentProduct.name}</strong> is already in your cart!</ModalHeader>}
+                    {alreadyExist && <ModalText>Do you want to delete it?</ModalText>}
+                    {!alreadyExist &&  <ModalFooter
+                        firstText="Add to Cart"
+                        secondaryText="Cancel"
+                        firstClick={handleAddingToCartFromModal}
+                        secondaryClick={handleToggleModalCart}
+                    />}
+                    {alreadyExist && <ModalFooter
+                        firstText="Delete from Cart"
+                        secondaryText="Cancel"
+                        firstClick={handleDeleteFromCartByModal}
+                        secondaryClick={handleToggleModalCart}
+                    />}
+                </ModalBody>
+            </ModalWrapper>
+        )
+    }
+
+    function handleToggleModalCart(currentProduct = null) {
+        setModalCart(!modalCart);
+        setCurrentProduct(currentProduct);
     }
 
     return (
         <>
-            {/*<div className="buttons-holder">*/}
-            {/*    <Button type="button" classNames="button" onClick={handleToggleFirstModal}>Open First Modal</Button>*/}
-            {/*    <Button type="button" classNames="button" onClick={handleToggleSecondModal}>Open Second Modal</Button>*/}
-            {/*</div>*/}
-
             {/*HEADER*/}
-            <Header className='qwe'>
+            <Header>
                 <Container>
                     <div className="header__holder">
                         <a href="#!" className="header__logo">
@@ -82,11 +164,11 @@ function App() {
                         </div>
                         <div className="header__buttons">
                             <button type="button" className="action-btn">
-                                <span className="count">{favoritesCount}</span>
+                                <span className="count">{favoritesItems.length}</span>
                                 <HeartIcon/>
                             </button>
                             <button type="button" className="action-btn">
-                                <span className="count">{cartCount}</span>
+                                <span className="count">{cartItems.length}</span>
                                 <CartIcon/>
                             </button>
                         </div>
@@ -95,9 +177,63 @@ function App() {
             </Header>
             {/*HEADER END*/}
 
+            {/*HERO*/}
+            <Hero/>
+            {/*HERO END*/}
+
+            <Heading>Categories For Men</Heading>
+
+            {categoryOneProducts && <ProductList>
+                {categoryOneProducts.map((product, index) => {
+                    return (
+                        <CategoryCard
+                            key={index}
+                            product={product}
+                            favoritesItems={favoritesItems}
+                            cartItems={cartItems}
+                            handleFavoriteToggle={handleFavoriteToggle}
+                            handleProductToCartToggle={handleProductToCartToggle}/>
+                    )
+                })}
+            </ProductList>}
+
+
+            <Heading>Categories For Women</Heading>
+
+            {categoryOneProducts && <ProductList>
+                {categoryTwoProducts.map((product, index) => {
+                    return (
+                        <CategoryCard
+                            key={index}
+                            product={product}
+                            favoritesItems={favoritesItems}
+                            cartItems={cartItems}
+                            handleFavoriteToggle={handleFavoriteToggle}
+                            handleProductToCartToggle={handleProductToCartToggle}/>
+                    )
+                })}
+            </ProductList>}
+
             {/*brand deals*/}
             <BrandDeals/>
             {/*brand deals END*/}
+
+
+            <Heading>In The Limelight</Heading>
+
+            {categoryOneProducts && <ProductList>
+                {categorySaleProducts.map((product, index) => {
+                    return (
+                        <ProductCard
+                            key={index}
+                            product={product}
+                            favoritesItems={favoritesItems}
+                            cartItems={cartItems}
+                            handleFavoriteToggle={handleFavoriteToggle}
+                            handleProductToCartToggle={handleProductToCartToggle}/>
+                    )
+                })}
+            </ProductList>}
 
 
             {/*FOOTER*/}
@@ -150,31 +286,7 @@ function App() {
             </Footer>
             {/*FOOTER END*/}
 
-            {fistModal && <ModalWrapper onClick={(e) => handleModalOverlayClick(e, handleToggleFirstModal)}>
-                <ModalBody>
-                    <ModalClose onClick={handleToggleFirstModal}/>
-                    <ModalImage/>
-                    <ModalHeader>Product Delete!</ModalHeader>
-                    <ModalText>By clicking the “Yes, Delete” button, PRODUCT NAME will be deleted.</ModalText>
-                    <ModalFooter
-                        firstText="NO, CANCEL"
-                        secondaryText="YES, DELETE"
-                        firstClick={handleModalFirstCLick}
-                        secondaryClick={handleModalSecondaryClick}
-                    />
-                </ModalBody>
-            </ModalWrapper>}
-
-            {secondModal && <ModalWrapper onClick={(e) => handleModalOverlayClick(e, handleToggleSecondModal)}>
-                <ModalBody>
-                    <ModalClose onClick={handleToggleSecondModal}/>
-                    <ModalHeader>Add Product “NAME”</ModalHeader>
-                    <ModalText>Description for you product</ModalText>
-                    <ModalFooter
-                        firstText="ADD TO FAVORITE"
-                    />
-                </ModalBody>
-            </ModalWrapper>}
+            {modalCart && currentProduct && renderAddToCartModal()}
 
         </>
     )

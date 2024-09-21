@@ -1,0 +1,48 @@
+.category-card {
+  position: relative;
+  flex: 0 1 270px;
+
+  .category-card-image {
+    width: 100%;
+    max-width: 270px;
+    height: 393px;
+    object-fit: cover;
+    border-radius: 15px;
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  &__inner {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__title {
+    margin: 5px 0 0;
+    font-weight: 700;
+    font-size: 17px;
+    line-height: 156%;
+    letter-spacing: -0.04em;
+    color: #2a2f2f;
+  }
+
+  &__subtitle {
+    margin: 0;
+    font-weight: 500;
+    font-size: 13px;
+    line-height: 208%;
+    letter-spacing: -0.04em;
+    color: #7f7f7f;
+  }
+
+  &__abs {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}

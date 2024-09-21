@@ -1,0 +1,56 @@
+.product-card {
+  flex: 0 1 270px;
+  position: relative;
+
+  &__image {
+    width: 100%;
+    max-width: 270px;
+    height: 393px;
+    object-fit: cover;
+    border-radius: 15px;
+    display: block;
+    margin-bottom: 10px;
+  }
+
+  &__cell {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+  }
+
+  &__title {
+    font-weight: 600;
+    font-size: 16px;
+    color: #3c4242;
+  }
+
+  &__brand {
+    font-weight: 500;
+    font-size: 14px;
+    color: #807d7e;
+  }
+  &__price {
+    width: 82px;
+    height: 36px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+    background: #f6f6f6;
+
+    font-weight: 700;
+    font-size: 14px;
+    text-align: center;
+    color: #3c4242;
+  }
+
+  &__abs {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+}

@@ -12,6 +12,11 @@
   text-transform: uppercase;
   transition: all .25s linear;
 
+  &.button-white {
+    background: #fff;
+    color: #000;
+  }
+
   &, &:visited {
     color: #fff;
   }

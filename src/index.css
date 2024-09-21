@@ -369,6 +369,12 @@ template {
     border-radius: 8px;
     cursor: pointer;
 
+    &.active {
+        svg {
+            fill: #8a33fd;
+        }
+    }
+
     span.count {
         position: absolute;
         top: 0;
@@ -379,6 +385,7 @@ template {
         border-radius: 11px;
         padding: 3px 5px;
         font-size: 11px;
+
         &:empty {
             display: none;
         }
