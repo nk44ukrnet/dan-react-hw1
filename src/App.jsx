@@ -27,6 +27,10 @@ import ProductList from "./containers/ProductList/ProductList.jsx";
 import CategoryCard from "./containers/ProductList/CategoryCard.jsx";
 import {sendRequest} from "./helpers/sendRequest.js";
 import ProductCard from "./containers/ProductList/ProductCard.jsx";
+import {Routes, Route, Link, NavLink} from "react-router-dom";
+import Home from "./pages/Home.jsx";
+import Cart from "./pages/Cart.jsx";
+import Favorites from "./pages/Favorites.jsx";
 
 function App() {
 
@@ -81,6 +85,15 @@ function App() {
             });
         } else {
             setFavoritesItems(prevState => {
+                return prevState.filter(item => item.code !== e.code);
+            });
+        }
+    }
+
+    function handleCartItemRemove(e){
+        const alreadyExists = cartItems.some(item => item.code === e.code);
+        if (alreadyExists) {
+            setCartItems(prevState => {
                 return prevState.filter(item => item.code !== e.code);
             });
         }
@@ -142,20 +155,19 @@ function App() {
 
     return (
         <>
+
             {/*HEADER*/}
             <Header>
                 <Container>
                     <div className="header__holder">
-                        <a href="#!" className="header__logo">
+                        <Link to="/" className="header__logo">
                             <ShopLogo/>
-                        </a>
+                        </Link>
                         <nav className="header__nav">
                             <ul>
-                                <li><a href="#!" className="active">Shop</a></li>
-                                <li><a href="#!">Men</a></li>
-                                <li><a href="#!">Women</a></li>
-                                <li><a href="#!">Combos</a></li>
-                                <li><a href="#!">Joggers</a></li>
+                                <li><NavLink activeclassname="active" to="/">Home</NavLink></li>{/*active*/}
+                                <li><NavLink activeclassname="active" to="/cart">Cart</NavLink></li>
+                                <li><NavLink activeclassname="active" to="favorites">Favorites</NavLink></li>
                             </ul>
                         </nav>
                         <div className="header__search">
@@ -163,77 +175,43 @@ function App() {
                             <input type="search" placeholder="Search"/>
                         </div>
                         <div className="header__buttons">
-                            <button type="button" className="action-btn">
+                            <Link to="/favorites" className="action-btn">
                                 <span className="count">{favoritesItems.length}</span>
                                 <HeartIcon/>
-                            </button>
-                            <button type="button" className="action-btn">
+                            </Link>
+                            <Link to="/cart" className="action-btn">
                                 <span className="count">{cartItems.length}</span>
                                 <CartIcon/>
-                            </button>
+                            </Link>
                         </div>
                     </div>
                 </Container>
             </Header>
             {/*HEADER END*/}
 
-            {/*HERO*/}
-            <Hero/>
-            {/*HERO END*/}
+            <Routes>
+                <Route path="/" element={<Home
+                    categoryOneProducts={categoryOneProducts}
+                    categoryTwoProducts={categoryTwoProducts}
+                    categorySaleProducts={categorySaleProducts}
+                    cartItems={cartItems}
+                    favoritesItems={favoritesItems}
+                    currentProduct={currentProduct}
+                    modalCart={modalCart}
+                    handleFavoriteToggle={handleFavoriteToggle}
+                    handleProductToCartToggle={handleProductToCartToggle}
+                />} />
 
-            <Heading>Categories For Men</Heading>
+                <Route path="/cart" element={<Cart
+                    cartItems={cartItems}
+                    handleCartItemRemove={handleCartItemRemove}
+                />} />
 
-            {categoryOneProducts && <ProductList>
-                {categoryOneProducts.map((product, index) => {
-                    return (
-                        <CategoryCard
-                            key={index}
-                            product={product}
-                            favoritesItems={favoritesItems}
-                            cartItems={cartItems}
-                            handleFavoriteToggle={handleFavoriteToggle}
-                            handleProductToCartToggle={handleProductToCartToggle}/>
-                    )
-                })}
-            </ProductList>}
-
-
-            <Heading>Categories For Women</Heading>
-
-            {categoryOneProducts && <ProductList>
-                {categoryTwoProducts.map((product, index) => {
-                    return (
-                        <CategoryCard
-                            key={index}
-                            product={product}
-                            favoritesItems={favoritesItems}
-                            cartItems={cartItems}
-                            handleFavoriteToggle={handleFavoriteToggle}
-                            handleProductToCartToggle={handleProductToCartToggle}/>
-                    )
-                })}
-            </ProductList>}
-
-            {/*brand deals*/}
-            <BrandDeals/>
-            {/*brand deals END*/}
-
-
-            <Heading>In The Limelight</Heading>
-
-            {categoryOneProducts && <ProductList>
-                {categorySaleProducts.map((product, index) => {
-                    return (
-                        <ProductCard
-                            key={index}
-                            product={product}
-                            favoritesItems={favoritesItems}
-                            cartItems={cartItems}
-                            handleFavoriteToggle={handleFavoriteToggle}
-                            handleProductToCartToggle={handleProductToCartToggle}/>
-                    )
-                })}
-            </ProductList>}
+                <Route path="/favorites" element={<Favorites
+                    favoritesItems={favoritesItems}
+                    handleRemoveFromFavorites={handleFavoriteToggle}
+                />} />
+            </Routes>
 
 
             {/*FOOTER*/}

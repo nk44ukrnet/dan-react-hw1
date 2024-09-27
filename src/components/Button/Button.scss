@@ -16,6 +16,10 @@
     background: #fff;
     color: #000;
   }
+  &.button-small {
+      padding: 5px 10px;
+    text-transform: unset;
+  }
 
   &, &:visited {
     color: #fff;
