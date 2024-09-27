@@ -1,0 +1,10 @@
+.simple-product {
+  flex: 0 1 200px;
+  img {
+    width: 100%;
+    max-width: 200px;
+    height: 150px;
+    object-fit: cover;
+    object-position: top center;
+  }
+}
