@@ -3,46 +3,61 @@ import Container from "../containers/Container/Container.jsx";
 import {CURRENCY_SYMBOL} from "../helpers/variables.js";
 import ProductList from "../containers/ProductList/ProductList.jsx";
 import SimpleProduct from "../containers/ProductList/SimpleProduct.jsx";
-import {useState} from "react";
 import ModalWrapper from "../components/Modal/ModalWrapper.jsx";
 import ModalBody from "../components/Modal/ModalBody.jsx";
 import ModalClose from "../components/Modal/ModalClose.jsx";
 import ModalHeader from "../components/Modal/ModalHeader.jsx";
 import ModalFooter from "../components/Modal/ModalFooter.jsx";
 
-export default function Cart({cartItems, handleCartItemRemove}) {
-    const [confirmModal, setConfirmModal] = useState(false)
-    const [currentProduct, setCurrentProduct] = useState(null);
+import {useDispatch, useSelector} from "react-redux";
+import {
+    setCurrentProductAndToggleModal,
+    clearCurrentProduct,
+    toggleHomeModalCart, toggleCartProduct,
+} from "../store/index.js";
 
-    function handleModalOpen(e) {
-        setConfirmModal(true);
-        setCurrentProduct(e);
+import {
+    selectorCart,
+    selectorHomeModalCart,
+    selectorCurrentProduct,
+} from "../store/selectors.js";
 
-    }
-    function handleModalClose(){
-        setConfirmModal(false);
-        setCurrentProduct(null);
-    }
+export default function Cart() {
 
-    function handleConfirm(code){
-        handleCartItemRemove({code});
-        handleModalClose();
-    }
+    const dispatch = useDispatch();
+
+    const selCart = useSelector(selectorCart);
+    const selHomeModalCart = useSelector(selectorHomeModalCart);
+    const selCurrentProduct = useSelector(selectorCurrentProduct);
+
 
     function renderConfirmModal(){
         return (
             <>
-                <ModalWrapper onClick={handleModalClose}>
+                <ModalWrapper onClick={()=>{
+                    dispatch(clearCurrentProduct())
+                    dispatch(toggleHomeModalCart())
+                }}>
                     <ModalBody>
-                        <ModalClose onClick={handleModalClose} />
+                        <ModalClose onClick={()=>{
+                            dispatch(clearCurrentProduct())
+                            dispatch(toggleHomeModalCart())
+                        }} />
                         <ModalHeader>
                             Do you want to remove product from cart?
                         </ModalHeader>
                         <ModalFooter
                             firstText="Yes"
                             secondaryText="Cancel"
-                            firstClick={()=>{handleConfirm(currentProduct)}}
-                            secondaryClick={handleModalClose}
+                            firstClick={()=>{
+                                dispatch(toggleCartProduct(selCurrentProduct))
+                                dispatch(clearCurrentProduct())
+                                dispatch(toggleHomeModalCart())
+                            }}
+                            secondaryClick={()=>{
+                                dispatch(clearCurrentProduct())
+                                dispatch(toggleHomeModalCart())
+                            }}
                         />
                     </ModalBody>
                 </ModalWrapper>
@@ -51,28 +66,31 @@ export default function Cart({cartItems, handleCartItemRemove}) {
     }
 
     function calcTotal(){
-        let total = cartItems.reduce((acc, item) => acc + item.price, 0);
+        let total = selCart.reduce((acc, item) => acc + item.price, 0);
         return `(Total: ${CURRENCY_SYMBOL}${total})`;
     }
+
  return (
   <>
       <Container>
-          <Heading>Products in your cart {cartItems.length > 0 && calcTotal()}</Heading>
+          <Heading>Products in your cart {selCart.length > 0 && calcTotal()}</Heading>
             <ProductList>
-                {cartItems && cartItems.map((item, index) => (
+                {selCart && selCart.map((item, index) => (
                     <SimpleProduct
                     key={index}
                     name={item.name}
                     image={item.image}
                     buttonText="Remove From Cart"
-                    action={handleModalOpen}
+                    action={()=>{
+                        dispatch(setCurrentProductAndToggleModal(item))
+                    }}
                     code={item.code}
                     price={item.price}
                     />
                 ))}
             </ProductList>
-          {cartItems.length === 0 && <p>No products in cart.</p>}
-          {confirmModal && renderConfirmModal()}
+          {selCart.length === 0 && <p>No products in cart.</p>}
+          {selCurrentProduct && renderConfirmModal()}
       </Container>
   </>
  );

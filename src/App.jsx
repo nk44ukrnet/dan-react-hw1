@@ -184,17 +184,7 @@ function App() {
             {/*HEADER END*/}
 
             <Routes>
-                <Route path="/" element={<Home
-                    categoryOneProducts={categoryOneProducts}
-                    categoryTwoProducts={categoryTwoProducts}
-                    categorySaleProducts={categorySaleProducts}
-                    cartItems={cartItems}
-                    favoritesItems={favoritesItems}
-                    currentProduct={currentProduct}
-                    modalCart={modalCart}
-                    handleFavoriteToggle={handleFavoriteToggle}
-                    handleProductToCartToggle={handleProductToCartToggle}
-                />} />
+                <Route path="/" element={<Home/>} />
 
                 <Route path="/cart" element={<Cart
                     cartItems={cartItems}

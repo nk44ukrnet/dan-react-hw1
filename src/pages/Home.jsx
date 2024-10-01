@@ -7,21 +7,34 @@ import ProductCard from "../containers/ProductList/ProductCard.jsx";
 
 import {useEffect} from "react";
 import {useDispatch, useSelector} from "react-redux";
-import {fetchProducts} from "../store/index.js";
-import {selectorCategoryOne, selectorFavorites} from "../store/selectors.js";
+import {
+    fetchProducts,
+    toggleFavorite,
+    setCurrentProduct,
+    clearCurrentProduct,
+    toggleHomeModalCart,
+    toggleCartProduct,
+    setCurrentProductAndToggleModal,
+} from "../store/index.js";
 
-export default function Home(props) {
-    const {
-        // categoryOneProducts,
-        categoryTwoProducts,
-        categorySaleProducts,
-        cartItems,
-        favoritesItems,
-        currentProduct,
-        modalCart,
-        handleFavoriteToggle,
-        handleProductToCartToggle
-    } = props;
+import {selectorCart,
+    selectorCategoryOne,
+    selectorCategoryTwo,
+    selectorCategorySale,
+    selectorFavorites,
+    selectorHomeModalCart,
+    selectorCurrentProduct,
+} from "../store/selectors.js";
+
+import ModalWrapper from "../components/Modal/ModalWrapper.jsx";
+import ModalBody from "../components/Modal/ModalBody.jsx";
+import ModalClose from "../components/Modal/ModalClose.jsx";
+import ModalImage from "../components/Modal/ModalImage.jsx";
+import ModalHeader from "../components/Modal/ModalHeader.jsx";
+import ModalText from "../components/Modal/ModalText.jsx";
+import ModalFooter from "../components/Modal/ModalFooter.jsx";
+
+export default function Home() {
 
     const dispatch = useDispatch();
 
@@ -30,15 +43,62 @@ export default function Home(props) {
     }, [dispatch])
 
      const categoryOneProducts = useSelector(selectorCategoryOne);
+     const categoryTwoProducts = useSelector(selectorCategoryTwo);
+     const categorySaleProducts = useSelector(selectorCategorySale);
      const selFavorites = useSelector(selectorFavorites);
-    console.log('favorites', selFavorites)
-    if (!categoryOneProducts) {
-        return 'Loading...'; // or perhaps return some sort of loading spinner
+     const selCart = useSelector(selectorCart);
+
+     const selHomeModalCart = useSelector(selectorHomeModalCart);
+     const selCurrentProduct = useSelector(selectorCurrentProduct);
+
+    function renderAddToCartModal() {
+        const alreadyExist = selCart.some(item => item.code === selCurrentProduct.code);
+        return (
+            <ModalWrapper onClick={()=>{
+                dispatch(clearCurrentProduct())
+                dispatch(toggleHomeModalCart())
+            }}>
+                <ModalBody>
+                    <ModalClose onClick={()=>{
+                        dispatch(clearCurrentProduct())
+                        dispatch(toggleHomeModalCart())
+                    }}/>
+                    <ModalImage src={`/public/products/${selCurrentProduct.image}`} alt={selCurrentProduct.name}/>
+                    {!alreadyExist && <ModalHeader>
+                        Add product <strong>{selCurrentProduct.name}</strong> to cart?
+                    </ModalHeader>}
+                    {alreadyExist && <ModalHeader>Product <strong>{selCurrentProduct.name}</strong> is already in your cart!</ModalHeader>}
+                    {alreadyExist && <ModalText>Do you want to delete it?</ModalText>}
+                    {!alreadyExist &&  <ModalFooter
+                        firstText="Add to Cart"
+                        secondaryText="Cancel"
+                        firstClick={()=>{
+                            dispatch(toggleCartProduct(selCurrentProduct))
+                            dispatch(clearCurrentProduct())
+                            dispatch(toggleHomeModalCart())
+                        }}
+                        secondaryClick={()=>{
+                            dispatch(clearCurrentProduct())
+                            dispatch(toggleHomeModalCart())
+                        }}
+                    />}
+                    {alreadyExist && <ModalFooter
+                        firstText="Delete from Cart"
+                        secondaryText="Cancel"
+                        firstClick={()=>{
+                            dispatch(toggleCartProduct(selCurrentProduct))
+                            dispatch(clearCurrentProduct())
+                            dispatch(toggleHomeModalCart())
+                        }}
+                        secondaryClick={()=>{
+                            dispatch(clearCurrentProduct())
+                            dispatch(toggleHomeModalCart())
+                        }}
+                    />}
+                </ModalBody>
+            </ModalWrapper>
+        )
     }
-    console.log(categoryOneProducts)
-    console.log(categoryOneProducts)
-    console.log(categoryOneProducts)
-    console.log(categoryOneProducts)
 
     return (
         <>
@@ -49,47 +109,46 @@ export default function Home(props) {
             <Heading>Categories For Men</Heading>
 
             {categoryOneProducts && <ProductList>
-                {/*{categoryOneProducts.map((product, index) => {*/}
-                {/*    return (*/}
-                {/*        <CategoryCard*/}
-                {/*            key={index}*/}
-                {/*            product={product}*/}
-                {/*            favoritesItems={favoritesItems}*/}
-                {/*            cartItems={cartItems}*/}
-                {/*            handleFavoriteToggle={handleFavoriteToggle}*/}
-                {/*            handleProductToCartToggle={handleProductToCartToggle}/>*/}
-                {/*    )*/}
-                {/*})}*/}
 
-                {/*{categoryOneProducts.map((product, index) =>{*/}
-                {/*    return (*/}
-                {/*        <CategoryCard*/}
-                {/*        key={index}*/}
-                {/*        />*/}
-                {/*    )*/}
-                {/*})}*/}
-                {categoryOneProducts.map((item,index)=>{
-                    console.log(item)
-                   return <div key={index}>{index}</div>
+                {categoryOneProducts.map((product, index) =>{
+                    return (
+                        <CategoryCard
+                        key={index}
+                        product={product}
+                        favoritesItems={selFavorites}
+                        cartItems={selCart}
+                        handleFavoriteToggle={()=> dispatch(toggleFavorite(product))}
+                        handleProductToCartToggle={()=>{
+                            dispatch(setCurrentProductAndToggleModal(product))
+                        }}
+                        />
+                    )
                 })}
+
             </ProductList>}
 
 
             <Heading>Categories For Women</Heading>
 
-            {categoryTwoProducts && <ProductList>
-                {categoryTwoProducts.map((product, index) => {
-                    return (
-                        <CategoryCard
-                            key={index}
-                            product={product}
-                            favoritesItems={favoritesItems}
-                            cartItems={cartItems}
-                            handleFavoriteToggle={handleFavoriteToggle}
-                            handleProductToCartToggle={handleProductToCartToggle}/>
-                    )
-                })}
+            {categoryOneProducts && <ProductList>
+
+            {categoryTwoProducts.map((product, index) =>{
+                return (
+                    <CategoryCard
+                        key={index}
+                        product={product}
+                        favoritesItems={selFavorites}
+                        cartItems={selCart}
+                        handleFavoriteToggle={()=> dispatch(toggleFavorite(product))}
+                        handleProductToCartToggle={()=>{
+                            dispatch(setCurrentProductAndToggleModal(product))
+                        }}
+                    />
+                )
+            })}
+
             </ProductList>}
+
 
             {/*brand deals*/}
             <BrandDeals/>
@@ -104,13 +163,17 @@ export default function Home(props) {
                         <ProductCard
                             key={index}
                             product={product}
-                            favoritesItems={favoritesItems}
-                            cartItems={cartItems}
-                            handleFavoriteToggle={handleFavoriteToggle}
-                            handleProductToCartToggle={handleProductToCartToggle}/>
+                            favoritesItems={selFavorites}
+                            cartItems={selCart}
+                            handleFavoriteToggle={()=> dispatch(toggleFavorite(product))}
+                            handleProductToCartToggle={()=>{
+                                dispatch(setCurrentProductAndToggleModal(product))
+                            }}/>
                     )
                 })}
             </ProductList>}
+
+            {selHomeModalCart && selCurrentProduct && renderAddToCartModal()}
         </>
     );
 };
