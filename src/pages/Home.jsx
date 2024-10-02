@@ -10,11 +10,9 @@ import {useDispatch, useSelector} from "react-redux";
 import {
     fetchProducts,
     toggleFavorite,
-    setCurrentProduct,
-    clearCurrentProduct,
-    toggleHomeModalCart,
     toggleCartProduct,
     setCurrentProductAndToggleModal,
+    clearCurrentProductAndResetModal
 } from "../store/index.js";
 
 import {selectorCart,
@@ -22,7 +20,7 @@ import {selectorCart,
     selectorCategoryTwo,
     selectorCategorySale,
     selectorFavorites,
-    selectorHomeModalCart,
+    selectorCurrentModal,
     selectorCurrentProduct,
 } from "../store/selectors.js";
 
@@ -48,20 +46,18 @@ export default function Home() {
      const selFavorites = useSelector(selectorFavorites);
      const selCart = useSelector(selectorCart);
 
-     const selHomeModalCart = useSelector(selectorHomeModalCart);
+     const selCurrentModal = useSelector(selectorCurrentModal);
      const selCurrentProduct = useSelector(selectorCurrentProduct);
 
     function renderAddToCartModal() {
         const alreadyExist = selCart.some(item => item.code === selCurrentProduct.code);
         return (
             <ModalWrapper onClick={()=>{
-                dispatch(clearCurrentProduct())
-                dispatch(toggleHomeModalCart())
+                dispatch(clearCurrentProductAndResetModal())
             }}>
                 <ModalBody>
                     <ModalClose onClick={()=>{
-                        dispatch(clearCurrentProduct())
-                        dispatch(toggleHomeModalCart())
+                        dispatch(clearCurrentProductAndResetModal())
                     }}/>
                     <ModalImage src={`/public/products/${selCurrentProduct.image}`} alt={selCurrentProduct.name}/>
                     {!alreadyExist && <ModalHeader>
@@ -74,12 +70,10 @@ export default function Home() {
                         secondaryText="Cancel"
                         firstClick={()=>{
                             dispatch(toggleCartProduct(selCurrentProduct))
-                            dispatch(clearCurrentProduct())
-                            dispatch(toggleHomeModalCart())
+                            dispatch(clearCurrentProductAndResetModal())
                         }}
                         secondaryClick={()=>{
-                            dispatch(clearCurrentProduct())
-                            dispatch(toggleHomeModalCart())
+                            dispatch(clearCurrentProductAndResetModal())
                         }}
                     />}
                     {alreadyExist && <ModalFooter
@@ -87,12 +81,10 @@ export default function Home() {
                         secondaryText="Cancel"
                         firstClick={()=>{
                             dispatch(toggleCartProduct(selCurrentProduct))
-                            dispatch(clearCurrentProduct())
-                            dispatch(toggleHomeModalCart())
+                            dispatch(clearCurrentProductAndResetModal())
                         }}
                         secondaryClick={()=>{
-                            dispatch(clearCurrentProduct())
-                            dispatch(toggleHomeModalCart())
+                            dispatch(clearCurrentProductAndResetModal())
                         }}
                     />}
                 </ModalBody>
@@ -173,7 +165,7 @@ export default function Home() {
                 })}
             </ProductList>}
 
-            {selHomeModalCart && selCurrentProduct && renderAddToCartModal()}
+            {selCurrentModal && selCurrentProduct && renderAddToCartModal()}
         </>
     );
 };

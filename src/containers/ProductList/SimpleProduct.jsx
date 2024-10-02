@@ -2,17 +2,17 @@ import './SimpleProduct.scss'
 import Button from "../../components/Button/Button.jsx";
 import {CURRENCY_SYMBOL} from "../../helpers/variables.js";
 
-export default function SimpleProduct({name, image, buttonText, action, code, price}) {
+export default function SimpleProduct({product, action, buttonText}) { //name, image, buttonText, action, code, price
     function handleClick() {
-        action(code);
+        action({product});
     }
 
     return (
         <>
             <div className="simple-product">
-                <img src={`/public/products/${image}`} alt={name} loading="lazy"/>
-                <p><strong>{name}</strong></p>
-                <p>Price: {`${CURRENCY_SYMBOL}${price}`}</p>
+                <img src={`/public/products/${product.image}`} alt={product.name} loading="lazy"/>
+                <p><strong>{product.name}</strong></p>
+                <p>Price: {`${CURRENCY_SYMBOL}${product.price}`}</p>
                 <Button classNames="button button-small" onClick={handleClick}>{buttonText}</Button>
             </div>
         </>

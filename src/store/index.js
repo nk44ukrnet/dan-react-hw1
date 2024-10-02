@@ -18,7 +18,7 @@ const itemSlice = createSlice({
         favoritesItems: JSON.parse(localStorage.getItem("favoritesItems")) || [],
         cartItems: JSON.parse(localStorage.getItem("cartItems")) || [],
         currentProduct: null,
-        homeModalCart: false,
+        currentModal: false,
     },
     reducers: {
         toggleFavorite: (state, action) => {  // Create reducer here
@@ -37,8 +37,8 @@ const itemSlice = createSlice({
         clearCurrentProduct: (state) => {
             state.currentProduct = null;
         },
-        toggleHomeModalCart: (state) => {
-            state.homeModalCart = !state.homeModalCart;
+        toggleCurrentModal: (state) => {
+            state.currentModal = !state.currentModal;
         },
         toggleCartProduct: (state, action) => {
             const existingIndex = state.cartItems.findIndex(item => item.code === action.payload.code);
@@ -52,7 +52,11 @@ const itemSlice = createSlice({
         },
         setCurrentProductAndToggleModal: (state, action) => {
             state.currentProduct = action.payload;
-            state.homeModalCart = !state.homeModalCart;
+            state.currentModal = !state.currentModal;
+        },
+        clearCurrentProductAndResetModal: (state) => {
+            state.currentProduct = null;
+            state.currentModal = false;
         },
         // ... define other actions here ...
     },
@@ -72,9 +76,10 @@ export const {
     toggleFavorite,
     setCurrentProduct,
     clearCurrentProduct,
-    toggleHomeModalCart,
+    toggleCurrentModal,
     toggleCartProduct,
-    setCurrentProductAndToggleModal
+    setCurrentProductAndToggleModal,
+    clearCurrentProductAndResetModal
 } = itemSlice.actions;
 
 const store = configureStore({

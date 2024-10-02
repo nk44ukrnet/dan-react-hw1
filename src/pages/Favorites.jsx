@@ -2,46 +2,54 @@ import Container from "../containers/Container/Container.jsx";
 import Heading from "../components/Heading/Heading.jsx";
 import ProductList from "../containers/ProductList/ProductList.jsx";
 import SimpleProduct from "../containers/ProductList/SimpleProduct.jsx";
-import {useState} from "react";
 import ModalWrapper from "../components/Modal/ModalWrapper.jsx";
 import ModalBody from "../components/Modal/ModalBody.jsx";
 import ModalClose from "../components/Modal/ModalClose.jsx";
 import ModalHeader from "../components/Modal/ModalHeader.jsx";
 import ModalFooter from "../components/Modal/ModalFooter.jsx";
 
-export default function Favorites({favoritesItems, handleRemoveFromFavorites}) {
-    const [confirmModal, setConfirmModal] = useState(false)
-    const [currentProduct, setCurrentProduct] = useState(null);
-    function handleModalOpen(e) {
-        setConfirmModal(true);
-        setCurrentProduct(e);
+import {useDispatch, useSelector} from "react-redux";
+import {
+    setCurrentProductAndToggleModal,
+    toggleFavorite,
+    clearCurrentProductAndResetModal,
+} from "../store/index.js";
 
-    }
-    function handleModalClose(){
-        setConfirmModal(false);
-        setCurrentProduct(null);
-    }
+import {
+    selectorFavorites,
+    selectorCurrentProduct,
+} from "../store/selectors.js";
 
-    function handleConfirm(code){
-        handleRemoveFromFavorites({code});
-        handleModalClose();
-    }
+export default function Favorites() {
 
+    const dispatch = useDispatch();
+
+    const selFavorites = useSelector(selectorFavorites);
+    const selCurrentProduct = useSelector(selectorCurrentProduct);
 
     function renderConfirmModal(){
         return (
             <>
-                <ModalWrapper onClick={handleModalClose}>
+                <ModalWrapper onClick={()=>{
+                    dispatch(clearCurrentProductAndResetModal())
+                }}>
                     <ModalBody>
-                        <ModalClose onClick={handleModalClose} />
+                        <ModalClose onClick={()=>{
+                            dispatch(clearCurrentProductAndResetModal())
+                        }} />
                         <ModalHeader>
                             Do you want to remove product from favorites?
                         </ModalHeader>
                         <ModalFooter
                             firstText="Yes"
                             secondaryText="Cancel"
-                            firstClick={()=>{handleConfirm(currentProduct)}}
-                            secondaryClick={handleModalClose}
+                            firstClick={()=>{
+                                dispatch(toggleFavorite(selCurrentProduct))
+                                dispatch(clearCurrentProductAndResetModal())
+                            }}
+                            secondaryClick={()=>{
+                                dispatch(clearCurrentProductAndResetModal())
+                            }}
 
                         />
                     </ModalBody>
@@ -54,22 +62,19 @@ export default function Favorites({favoritesItems, handleRemoveFromFavorites}) {
             <Container>
                 <Heading>List Of Your Favorite Products</Heading>
                 <ProductList>
-                    {favoritesItems && favoritesItems.map((item, index) => {
+                    {selFavorites && selFavorites.map((item, index) => {
                         return (
                             <SimpleProduct
                                 key={index}
-                                name={item.name}
-                                image={item.image}
+                                product={item}
                                 buttonText="Remove From Favorites"
-                                action={handleModalOpen}
-                                code={item.code}
-                                price={item.price}
+                                action={()=>{dispatch(setCurrentProductAndToggleModal(item))}}
                             />
                         )
                     })}
                 </ProductList>
-                {favoritesItems.length === 0 && <p>No products in favorites.</p>}
-                {confirmModal && renderConfirmModal()}
+                {selFavorites.length === 0 && <p>No products in favorites.</p>}
+                {selCurrentProduct && renderConfirmModal()}
             </Container>
         </>
     );

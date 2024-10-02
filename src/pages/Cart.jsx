@@ -12,13 +12,12 @@ import ModalFooter from "../components/Modal/ModalFooter.jsx";
 import {useDispatch, useSelector} from "react-redux";
 import {
     setCurrentProductAndToggleModal,
-    clearCurrentProduct,
-    toggleHomeModalCart, toggleCartProduct,
+    toggleCartProduct,
+    clearCurrentProductAndResetModal
 } from "../store/index.js";
 
 import {
     selectorCart,
-    selectorHomeModalCart,
     selectorCurrentProduct,
 } from "../store/selectors.js";
 
@@ -27,7 +26,6 @@ export default function Cart() {
     const dispatch = useDispatch();
 
     const selCart = useSelector(selectorCart);
-    const selHomeModalCart = useSelector(selectorHomeModalCart);
     const selCurrentProduct = useSelector(selectorCurrentProduct);
 
 
@@ -35,13 +33,11 @@ export default function Cart() {
         return (
             <>
                 <ModalWrapper onClick={()=>{
-                    dispatch(clearCurrentProduct())
-                    dispatch(toggleHomeModalCart())
+                    dispatch(clearCurrentProductAndResetModal())
                 }}>
                     <ModalBody>
                         <ModalClose onClick={()=>{
-                            dispatch(clearCurrentProduct())
-                            dispatch(toggleHomeModalCart())
+                            dispatch(clearCurrentProductAndResetModal())
                         }} />
                         <ModalHeader>
                             Do you want to remove product from cart?
@@ -51,12 +47,10 @@ export default function Cart() {
                             secondaryText="Cancel"
                             firstClick={()=>{
                                 dispatch(toggleCartProduct(selCurrentProduct))
-                                dispatch(clearCurrentProduct())
-                                dispatch(toggleHomeModalCart())
+                                dispatch(clearCurrentProductAndResetModal())
                             }}
                             secondaryClick={()=>{
-                                dispatch(clearCurrentProduct())
-                                dispatch(toggleHomeModalCart())
+                                dispatch(clearCurrentProductAndResetModal())
                             }}
                         />
                     </ModalBody>
@@ -78,14 +72,11 @@ export default function Cart() {
                 {selCart && selCart.map((item, index) => (
                     <SimpleProduct
                     key={index}
-                    name={item.name}
-                    image={item.image}
+                    product={item}
                     buttonText="Remove From Cart"
                     action={()=>{
                         dispatch(setCurrentProductAndToggleModal(item))
                     }}
-                    code={item.code}
-                    price={item.price}
                     />
                 ))}
             </ProductList>
