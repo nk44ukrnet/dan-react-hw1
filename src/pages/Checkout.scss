@@ -1,0 +1,9 @@
+.checkout-holder {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  gap: 30px;
+  & > div {
+    flex: 1 1 300px;
+  }
+}

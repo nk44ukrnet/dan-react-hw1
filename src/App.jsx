@@ -21,6 +21,7 @@ import {
     selectorFavorites
 } from "./store/selectors.js";
 import {useSelector} from "react-redux";
+import Checkout from "./pages/Checkout.jsx";
 
 function App() {
 
@@ -41,7 +42,8 @@ function App() {
                             <ul>
                                 <li><NavLink activeclassname="active" to="/">Home</NavLink></li>{/*active*/}
                                 <li><NavLink activeclassname="active" to="/cart">Cart</NavLink></li>
-                                <li><NavLink activeclassname="active" to="favorites">Favorites</NavLink></li>
+                                <li><NavLink activeclassname="active" to="/favorites">Favorites</NavLink></li>
+                                <li><NavLink activeclassname="active" to="/checkout">Checkout</NavLink></li>
                             </ul>
                         </nav>
                         <div className="header__search">
@@ -69,6 +71,8 @@ function App() {
                 <Route path="/cart" element={<Cart />} />
 
                 <Route path="/favorites" element={<Favorites />} />
+
+                <Route path="/checkout" element={<Checkout />} />
 
             </Routes>
 
