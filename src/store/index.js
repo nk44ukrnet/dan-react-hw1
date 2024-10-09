@@ -23,7 +23,7 @@ const itemSlice = createSlice({
     reducers: {
         toggleFavorite: (state, action) => {  // Create reducer here
             const existingIndex = state.favoritesItems.findIndex(item => item.code === action.payload.code);
-            if (existingIndex >=0) {
+            if (existingIndex >= 0) {
                 // The item is already in favorites. Remove it.
                 state.favoritesItems.splice(existingIndex, 1);
             } else {
@@ -42,7 +42,7 @@ const itemSlice = createSlice({
         },
         toggleCartProduct: (state, action) => {
             const existingIndex = state.cartItems.findIndex(item => item.code === action.payload.code);
-            if (existingIndex >=0) {
+            if (existingIndex >= 0) {
                 // The item is already in favorites. Remove it.
                 state.cartItems.splice(existingIndex, 1);
             } else {
@@ -58,6 +58,9 @@ const itemSlice = createSlice({
             state.currentProduct = null;
             state.currentModal = false;
         },
+        emptyCart: (state) => {
+            state.cartItems = [];
+        }
         // ... define other actions here ...
     },
     extraReducers: (builder) => {
@@ -71,7 +74,6 @@ const itemSlice = createSlice({
 });
 
 
-
 export const {
     toggleFavorite,
     setCurrentProduct,
@@ -79,7 +81,8 @@ export const {
     toggleCurrentModal,
     toggleCartProduct,
     setCurrentProductAndToggleModal,
-    clearCurrentProductAndResetModal
+    clearCurrentProductAndResetModal,
+    emptyCart
 } = itemSlice.actions;
 
 const store = configureStore({

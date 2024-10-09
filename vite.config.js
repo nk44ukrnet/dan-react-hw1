@@ -6,6 +6,9 @@ import svgr from 'vite-plugin-svgr'
 export default defineConfig({
   plugins: [react(), svgr()],
   base: './',
+  optimizeDeps: {
+    include: ['react-number-format']
+  },
   build: {
     outDir: 'dist',
     emptyOutDir: true,

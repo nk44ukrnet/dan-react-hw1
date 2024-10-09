@@ -52,11 +52,11 @@ function App() {
                         </div>
                         <div className="header__buttons">
                             <Link to="/favorites" className="action-btn">
-                                <span className="count">{selCartItems.length}</span>
+                                <span className="count">{selFavItems.length}</span>
                                 <HeartIcon/>
                             </Link>
                             <Link to="/cart" className="action-btn">
-                                <span className="count">{selFavItems.length}</span>
+                                <span className="count">{selCartItems.length}</span>
                                 <CartIcon/>
                             </Link>
                         </div>

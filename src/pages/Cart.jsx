@@ -81,7 +81,7 @@ export default function Cart() {
                     />
                 ))}
             </ProductList>
-          {selCart && <><hr /><Link className="button button-red button-small" to="/checkout">Proceed to checkout</Link></>}
+          {selCart && selCart.length > 0 && <><hr /><Link className="button button-red button-small" to="/checkout">Proceed to checkout</Link></>}
           {selCart.length === 0 && <p>No products in cart.</p>}
           {selCurrentProduct && renderConfirmModal()}
       </Container>
