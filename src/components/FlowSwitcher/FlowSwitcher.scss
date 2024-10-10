@@ -1,0 +1,19 @@
+.flow-switcher {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 15px;
+  justify-content: flex-end;
+  margin-left: auto;
+  padding: 10px;
+  border: 1px solid #000;
+  border-radius: 10px;
+  width: fit-content;
+
+  svg {
+    cursor: pointer;
+    height: 20px;
+    &.highlighted {
+      color: purple;
+    }
+  }
+}

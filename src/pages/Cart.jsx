@@ -1,3 +1,4 @@
+import React, {useContext} from "react";
 import Heading from "../components/Heading/Heading.jsx";
 import Container from "../containers/Container/Container.jsx";
 import {CURRENCY_SYMBOL} from "../helpers/variables.js";
@@ -22,6 +23,9 @@ import {
     selectorCurrentProduct,
 } from "../store/selectors.js";
 
+import FlowSwitcher from "../components/FlowSwitcher/FlowSwitcher.jsx";
+
+
 export default function Cart() {
 
     const dispatch = useDispatch();
@@ -30,27 +34,27 @@ export default function Cart() {
     const selCurrentProduct = useSelector(selectorCurrentProduct);
 
 
-    function renderConfirmModal(){
+    function renderConfirmModal() {
         return (
             <>
-                <ModalWrapper onClick={()=>{
+                <ModalWrapper onClick={() => {
                     dispatch(clearCurrentProductAndResetModal())
                 }}>
                     <ModalBody>
-                        <ModalClose onClick={()=>{
+                        <ModalClose onClick={() => {
                             dispatch(clearCurrentProductAndResetModal())
-                        }} />
+                        }}/>
                         <ModalHeader>
                             Do you want to remove product from cart?
                         </ModalHeader>
                         <ModalFooter
                             firstText="Yes"
                             secondaryText="Cancel"
-                            firstClick={()=>{
+                            firstClick={() => {
                                 dispatch(toggleCartProduct(selCurrentProduct))
                                 dispatch(clearCurrentProductAndResetModal())
                             }}
-                            secondaryClick={()=>{
+                            secondaryClick={() => {
                                 dispatch(clearCurrentProductAndResetModal())
                             }}
                         />
@@ -60,31 +64,38 @@ export default function Cart() {
         )
     }
 
-    function calcTotal(){
+    function calcTotal() {
         let total = selCart.reduce((acc, item) => acc + item.price, 0);
         return `(Total: ${CURRENCY_SYMBOL}${total})`;
     }
 
- return (
-  <>
-      <Container>
-          <Heading>Products in your cart {selCart.length > 0 && calcTotal()}</Heading>
-            <ProductList>
-                {selCart && selCart.map((item, index) => (
-                    <SimpleProduct
-                    key={index}
-                    product={item}
-                    buttonText="Remove From Cart"
-                    action={()=>{
-                        dispatch(setCurrentProductAndToggleModal(item))
-                    }}
-                    />
-                ))}
-            </ProductList>
-          {selCart && selCart.length > 0 && <><hr /><Link className="button button-red button-small" to="/checkout">Proceed to checkout</Link></>}
-          {selCart.length === 0 && <p>No products in cart.</p>}
-          {selCurrentProduct && renderConfirmModal()}
-      </Container>
-  </>
- );
+    return (
+        <>
+            <Container>
+                <Heading>Products in your cart {selCart.length > 0 && calcTotal()}</Heading>
+
+                <FlowSwitcher/>
+
+                <ProductList>
+                    {selCart && selCart.map((item, index) => (
+                        <SimpleProduct
+                            key={index}
+                            product={item}
+                            buttonText="Remove From Cart"
+                            action={() => {
+                                dispatch(setCurrentProductAndToggleModal(item))
+                            }}
+                        />
+                    ))}
+                </ProductList>
+
+                {selCart && selCart.length > 0 && <>
+                    <hr/>
+                    <Link className="button button-red button-small" to="/checkout">Proceed to checkout</Link></>}
+                {selCart.length === 0 && <p>No products in cart.</p>}
+                {selCurrentProduct && renderConfirmModal()}
+            </Container>
+        </>
+    )
+        ;
 };

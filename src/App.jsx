@@ -22,6 +22,7 @@ import {
 } from "./store/selectors.js";
 import {useSelector} from "react-redux";
 import Checkout from "./pages/Checkout.jsx";
+import {ContextFlexGrowProvider} from   './context/context.jsx'
 
 function App() {
 
@@ -29,7 +30,7 @@ function App() {
     const selFavItems = useSelector(selectorFavorites);
 
     return (
-        <>
+        <ContextFlexGrowProvider>
 
             {/*HEADER*/}
             <Header>
@@ -127,7 +128,7 @@ function App() {
             </Footer>
             {/*FOOTER END*/}
 
-        </>
+        </ContextFlexGrowProvider>
     )
 }
 

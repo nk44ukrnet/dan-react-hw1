@@ -19,6 +19,7 @@ import {
     selectorFavorites,
     selectorCurrentProduct,
 } from "../store/selectors.js";
+import FlowSwitcher from "../components/FlowSwitcher/FlowSwitcher.jsx";
 
 export default function Favorites() {
 
@@ -61,6 +62,7 @@ export default function Favorites() {
         <>
             <Container>
                 <Heading>List Of Your Favorite Products</Heading>
+                <FlowSwitcher />
                 <ProductList>
                     {selFavorites && selFavorites.map((item, index) => {
                         return (
