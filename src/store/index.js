@@ -1,3 +1,4 @@
+import React from 'react';
 import {createSlice, configureStore, createAsyncThunk} from "@reduxjs/toolkit";
 import {sendRequest} from "../helpers/sendRequest.js";
 import {storageMiddleware} from "./StorageMiddleware.js";
@@ -90,4 +91,5 @@ const store = configureStore({
     middleware: (getDefaultMiddleware) => getDefaultMiddleware().concat(storageMiddleware),
 });
 
+export const itemReducer = itemSlice.reducer;
 export default store;

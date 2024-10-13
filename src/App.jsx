@@ -1,3 +1,4 @@
+import React from 'react';
 import './App.scss';
 import Footer from "./containers/Footer/Footer.jsx";
 import Container from "./containers/Container/Container.jsx";

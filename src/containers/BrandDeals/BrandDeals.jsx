@@ -1,3 +1,4 @@
+import React from 'react';
 import Container from "../Container/Container.jsx";
 import Brand1 from '/public/brand1.png';
 import Brand2 from '/public/brand2.png';
@@ -7,6 +8,11 @@ import Brand5 from '/public/brand5.png';
 import './BrandDeals.scss';
 
 export default function BrandDeals() {
+    // const Brand1 = require('/public/brand1.png');
+    // const Brand2 = require('/public/brand2.png');
+    // const Brand3 = require('/public/brand3.png');
+    // const Brand4 = require('/public/brand4.png');
+    // const Brand5 = require('/public/brand5.png');
     return (
         <div className="brand-deals">
             <Container>

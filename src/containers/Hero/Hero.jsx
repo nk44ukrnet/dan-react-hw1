@@ -1,3 +1,4 @@
+import React from 'react';
 import Container from "../Container/Container.jsx";
 import ChevronLeft from './icons/ChevronLeft.svg?react';
 import ChevronRight from './icons/ChevronRight.svg?react';
@@ -61,9 +62,9 @@ export default function Hero() {
                 </div>
             </Container>
             {heroSlides.length > 1 && <div className="hero__slide-controls">
-                <button type="button" className="hero__arrows hero__arrows--prev" onClick={handlePrevSlide}>
+                <button type="button" className="hero__arrows hero__arrows--prev" onClick={handlePrevSlide} aria-label="previous">
                     <ChevronLeft/></button>
-                <button type="button" className="hero__arrows hero__arrows--next" onClick={handleNextSlide}>
+                <button type="button" className="hero__arrows hero__arrows--next" onClick={handleNextSlide} aria-label="next">
                     <ChevronRight/></button>
                 <div className="hero__dots">
                     {heroSlides.map((slide, index) => {
